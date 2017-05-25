@@ -122,6 +122,14 @@ class wechatCallbackapiTest
 			$content = array();			
             $content[] = array("Title"=>"",  "Description"=>"", "PicUrl"=>"http://103.13.221.30/weixin/hunsha/$str", "Url" =>"http://103.13.221.30/weixin/imageShow.php");
         }
+		else if (strstr($keyword, "温度")){
+			$sql = "select * from user where id = '1'";
+			$result = @mysql_query($sql) or die("错误：".mysql_error());
+			while($rs = mysql_fetch_array($result))
+			{
+				$content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%";
+			}		
+        }
 		else if (strstr($keyword, "图文")){
             $content = array();
 			$keyword = str_replace('图文', '' ,$keyword);			
