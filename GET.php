@@ -5,6 +5,9 @@
 		echo $getresult = $_GET["temp"]; 
 		$sql = "update `user` set temp = '$getresult'";		
 		mysql_query($sql);
+        $time = date("Y-m-d h:i:sa");
+        $sql = "update `user` set time = '$time'";		
+		mysql_query($sql);
 	} 
 	if(!empty($_GET["humi"]))	//判断get的值有没有
 	{

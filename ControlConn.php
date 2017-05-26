@@ -1,10 +1,16 @@
-﻿<?php	
+<?php	
     header("Content-Type:text/html;charset=utf-8");   
-	$link = @mysql_connect("localhost","root","root") or die("连接错误".mysql_error());
 	
-	//判断php100数据库是否存在，不存在则新建
-	@mysql_select_db("dht",$link) or die(mysql_query("CREATE DATABASE dht"));			
-		
+    // 连主库
+    $link=mysql_connect(SAE_MYSQL_HOST_M.':'.SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+
+    if($link) {
+        $db = mysql_select_db(SAE_MYSQL_DB,$link);
+        //var_dump($db);
+        //your code goes here
+        //echo "ok!";
+    }				
+	
 	// Create database
 	/* if (mysql_query("CREATE DATABASE dht",$link))
 	{
@@ -22,7 +28,8 @@
 	id int(11) not null auto_increment primary key,
 	temp varchar(20) charset utf8,
 	humi varchar(20) charset utf8,
-	control varchar(20) charset utf8
+	control varchar(20) charset utf8,
+    time varchar(30) charset utf8
 	)
 	";
 	mysql_query($sql) or die(mysql_error());	

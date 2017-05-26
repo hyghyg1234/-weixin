@@ -3,27 +3,7 @@
     方倍工作室 http://www.cnblogs.com/txw1958/
     CopyRight 2013 www.fangbei.org  All Rights Reserved
 */
-
-$path="hunsha";  
-$handle = opendir($path); //当前目录  
-  
-while (false !== ($file = readdir($handle))) 
-{ //遍历该php文件所在目录  
-	list($filesname,$kzm)=explode(".",$file);//获取扩展名  
-
-	if($kzm=="gif" or $kzm=="jpg" or $kzm=="JPG") 
-	{ 
-		//文件过滤   
-		if (!is_dir('./'.$file)) 
-		{
-			//文件夹过滤   
-			$FileArray[]=$file;//把符合条件的文件名存入数组    
-			$num++;//记录图片总张数  	
-		}
-	}  
-}  
-
-include("ControlConn.php");		//配置接口时要注释掉这条
+include("ControlConn.php");		//配置接口时要注释掉这条	
 header('Content-type:text');
 define("TOKEN", "weixin");
 $wechatObj = new wechatCallbackapiTest();
@@ -71,6 +51,9 @@ class wechatCallbackapiTest
 				case "image":
                     $result = $this->receiveImage($postObj);
                     break;
+                case "event":
+                    $result = $this->receiveEvent($postObj);
+                    break;
             }
             $this->logger("T \r\n".$result);
             echo $result;
@@ -80,6 +63,50 @@ class wechatCallbackapiTest
         }
     }
 	
+    private function receiveEvent($object)
+    {
+        $content = "";
+        switch ($object->Event)
+        {
+            case "CLICK":
+                switch ($object->EventKey)
+                {
+                    case "temp":
+                        $sql = "select * from user where id = '1'";
+                        $result = @mysql_query($sql) or die("错误：".mysql_error());
+                        while($rs = mysql_fetch_array($result))
+                        {
+                            $content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%\n".$rs["time"];
+                        }	
+                        break;
+                    case "open":
+                        $sql = "update `user` set control = 'OPEN' where id='1' limit 1";		
+                        mysql_query($sql);
+                        mysql_close();
+
+                        $content = "打开";	
+                        break;
+                     case "close":
+						$sql = "update `user` set control = 'CLOSE' where id='1' limit 1";		
+                        mysql_query($sql);
+                        mysql_close();
+
+                        $content = "关闭";
+                        break;
+                }
+                break;
+            default:
+                break;      
+
+        }
+        if (is_array($content)){
+            $resultStr = $this->transmitNews($object, $content);
+        }else{
+            $resultStr = $this->transmitText($object, $content);
+        }
+        return $resultStr;
+    }
+    
 	//接收图片消息
     private function receiveImage($object)
     {
@@ -115,25 +142,13 @@ class wechatCallbackapiTest
 			
 			$content = "关闭";					
 		}
-		else if (strstr($keyword, "钦莲")){
-			global $FileArray;
-			global	$num;
-            $str = $FileArray[rand(0,$num)];
-			$content = array();			
-            $content[] = array("Title"=>"",  "Description"=>"", "PicUrl"=>"http://103.13.221.30/weixin/hunsha/$str", "Url" =>"http://103.13.221.30/weixin/imageShow.php");
-        }
 		else if (strstr($keyword, "温度")){
 			$sql = "select * from user where id = '1'";
 			$result = @mysql_query($sql) or die("错误：".mysql_error());
 			while($rs = mysql_fetch_array($result))
 			{
-				$content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%";
+				$content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%\n".$rs["time"];
 			}		
-        }
-		else if (strstr($keyword, "图文")){
-            $content = array();
-			$keyword = str_replace('图文', '' ,$keyword);			
-            $content[] = array("Title"=>"",  "Description"=>"", "PicUrl"=>"http://103.13.221.30/weixin/image/$keyword.jpg", "Url" =>"http://103.13.221.30/weixin/imageShow.php");
         }
 		else
 		{
