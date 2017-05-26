@@ -3,10 +3,10 @@
 	$link = @mysql_connect("localhost","root","root") or die("连接错误".mysql_error());
 	
 	//判断php100数据库是否存在，不存在则新建
-	//@mysql_select_db("dht",$link) or die(mysql_query("CREATE DATABASE dht"));			
+	@mysql_select_db("dht",$link) or die(mysql_query("CREATE DATABASE dht"));			
 		
 	// Create database
-	if (mysql_query("CREATE DATABASE dht",$link))
+	/* if (mysql_query("CREATE DATABASE dht",$link))
 	{
 		echo "Database created";
 	}
@@ -14,14 +14,15 @@
 	{
 		echo "Error creating database: " . mysql_error();
 	}
-	mysql_select_db("dht",$link);
+	mysql_select_db("dht",$link); */
 	//如果没有数据库则新建
 	$sql = "
 	CREATE TABLE IF NOT EXISTS user 
 	(
 	id int(11) not null auto_increment primary key,
 	temp varchar(20) charset utf8,
-	humi varchar(20) charset utf8
+	humi varchar(20) charset utf8,
+	control varchar(20) charset utf8
 	)
 	";
 	mysql_query($sql) or die(mysql_error());	

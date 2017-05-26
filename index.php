@@ -101,7 +101,7 @@ class wechatCallbackapiTest
         //自动回复模式       
 		if($keyword == "打开")
 		{
-			$sql = "update `user` set control = 'OPENALL' where id='1' limit 1";		
+			$sql = "update `user` set control = 'OPEN' where id='1' limit 1";		
 			mysql_query($sql);
 			mysql_close();
 			
@@ -109,7 +109,7 @@ class wechatCallbackapiTest
 		}
 		elseif($keyword == "关闭")
 		{
-			$sql = "update `user` set control = 'CLOSEALL' where id='1' limit 1";		
+			$sql = "update `user` set control = 'CLOSE' where id='1' limit 1";		
 			mysql_query($sql);
 			mysql_close();
 			
