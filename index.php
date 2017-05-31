@@ -72,11 +72,12 @@ class wechatCallbackapiTest
                 switch ($object->EventKey)
                 {
                     case "temp":
-                        $sql = "select * from user where id = '1'";
+                        $sql = "select * from user where id = (select max(id) from user)";
                         $result = @mysql_query($sql) or die("错误：".mysql_error());
                         while($rs = mysql_fetch_array($result))
                         {
                             $content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%\n".$rs["time"];
+                            $content = $content."\n一共".$rs["id"]."数据";
                         }	
                         break;
                     case "open":
@@ -142,13 +143,13 @@ class wechatCallbackapiTest
 			
 			$content = "关闭";					
 		}
-		else if (strstr($keyword, "温度")){
-			$sql = "select * from user where id = '1'";
-			$result = @mysql_query($sql) or die("错误：".mysql_error());
-			while($rs = mysql_fetch_array($result))
-			{
-				$content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%\n".$rs["time"];
-			}		
+		else if (strstr($keyword, "数量")){
+			$sql = "select * from user where id = (select max(id) from user)";
+            $result = @mysql_query($sql) or die("错误：".mysql_error());
+            while($rs = mysql_fetch_array($result))
+            {
+                $content = $content."一共".$rs["id"]."数据";
+            }	
         }
 		else
 		{

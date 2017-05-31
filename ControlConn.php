@@ -1,26 +1,11 @@
 <?php	
     header("Content-Type:text/html;charset=utf-8");   
 	
-    // 连主库
-    $link=mysql_connect(SAE_MYSQL_HOST_M.':'.SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
-
-    if($link) {
-        $db = mysql_select_db(SAE_MYSQL_DB,$link);
-        //var_dump($db);
-        //your code goes here
-        //echo "ok!";
-    }				
+	$link = @mysql_connect("localhost","root","root") or die("连接错误".mysql_error());
 	
-	// Create database
-	/* if (mysql_query("CREATE DATABASE dht",$link))
-	{
-		echo "Database created";
-	}
-	else
-	{
-		echo "Error creating database: " . mysql_error();
-	}
-	mysql_select_db("dht",$link); */
+	//判断php100数据库是否存在，不存在则新建
+	@mysql_select_db("dht",$link) or die(mysql_query("CREATE DATABASE dht"));
+	
 	//如果没有数据库则新建
 	$sql = "
 	CREATE TABLE IF NOT EXISTS user 
