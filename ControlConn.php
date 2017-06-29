@@ -29,6 +29,5 @@
 		$sql = "INSERT INTO user (id, temp, humi) VALUES ('1', '  ', '  ')";
 		@mysql_query($sql) or die("错误：".mysql_error());
 		echo "add data";
-	} 
-		
+	} 		
 ?>
