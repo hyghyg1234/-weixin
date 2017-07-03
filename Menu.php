@@ -163,23 +163,33 @@ var_dump($weixin->send_custom_message($openid, "text", "asdf")); */
 
 //创建菜单
 $data = '{
-     "button":[
-      {
-          "type":"click",
-          "name":"温度",
-          "key":"temp"
-      },
-      {
-           "type":"click",
-           "name":"打开",
-           "key":"open"
-      },
-      {
-      		"type":"click",
-            "name":"关闭",
-            "key":"close"
-
-      }]
+		"button":[
+			{
+				"type":"click",
+				"name":"温度",
+				"key":"temp"
+			},		
+			{
+				"name":"远程控制",
+				"sub_button":[
+					{
+						"type":"click",
+						"name":"打开",
+						"key":"open"
+					},
+					{
+						"type":"click",
+						"name":"关闭",
+						"key":"close"
+					}
+				]
+			},
+			{
+				"type":"click",
+				"name":"重启设备",
+				"key":"restart"
+			}
+		]
 }';
 var_dump($weixin->create_menu($data));
 

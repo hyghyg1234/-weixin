@@ -4,7 +4,7 @@
 	{
 		$temp = $_GET["temp"]; 
         $humi = $_GET["humi"]; 
-        $time = date("Y-m-d h:i:sa");
+        $time = date("Y-m-d H:i:s");
 		//$sql = "update `user` set temp = '$temp', humi = '$humi',time = '$time'";
         //插入数据
 		$sql = "INSERT INTO user (temp, humi, time) VALUES ('$temp', '$humi', '$time')";

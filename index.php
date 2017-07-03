@@ -115,13 +115,17 @@ class wechatCallbackapiTest
 						mqtt("OPEN");
                         $content = "打开";	
                         break;
-                     case "close":
+                    case "close":
 						$sql = "update `user` set control = 'CLOSE' where id='1' limit 1";		
                         mysql_query($sql);
                         mysql_close();
 						mqtt("CLOSE");
                         $content = "关闭";
                         break;
+					case "restart":
+						mqtt("restart");
+						$content = "重启";
+						break;
                 }
                 break;
             default:
@@ -179,6 +183,10 @@ class wechatCallbackapiTest
                 $content = $content."一共".$rs["id"]."数据";
             }	
         }
+		else if (strstr($keyword, "重启")){
+			mqtt("restart");
+			$content = "重启";
+        }		
 		else
 		{
 			$sql = "update `user` set control = '$keyword' where id='1' limit 1";		
