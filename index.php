@@ -107,6 +107,7 @@ class wechatCallbackapiTest
                             $content = "temp:".$rs["temp"]."℃    "."humi:".$rs["humi"]."%\n".$rs["time"];
                             $content = $content."\n一共".$rs["id"]."数据";
                         }	
+						$content = $content.'<a href="http://103.13.221.30/weixin/dht11.php">温度曲线</a>';
                         break;
                     case "open":
                         $sql = "update `user` set control = 'OPEN' where id='1' limit 1";		
