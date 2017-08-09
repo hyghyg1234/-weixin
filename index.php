@@ -35,7 +35,7 @@ function mqtt($str)
 	//860173018344139是设备号，每一台android手机对应一个唯一的设备号   
 	//$msgCpu通知内容  
 	//send()推送通知  
-	$conn->send('topic://'.'pc', $msgCpu);  
+	$conn->send('topic://'.'esp8266', $msgCpu);  
 	  
 	//关闭连接  
 	$conn->disconnect(); 		
